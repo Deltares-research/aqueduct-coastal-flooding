@@ -1,6 +1,6 @@
-These scripts simulate Flood Hazard based on extreme offshore still water levels using 
-a simple GIS routing and were initially developed for [Aqueduct Floods](http://floods.wri.org/). 
-
+Scripts to simulate coastal flood hazard at the global scale based on near-shore still water levels using a simple GIS routing.  
+These scripts were initially developed for [Aqueduct Floods](http://floods.wri.org/).
+See publication list for more background.
 
 How to use
 ----------
@@ -21,13 +21,13 @@ Publications
 
 Authors
 -------
-Dirk Eilander
-Hessel Winsemius
-Gundula Winter
+- Dirk Eilande (@DirkEilander)
+- Hessel C. Winsemius (@hcwinsemius)
+- Gundula Winter
 
 
 License
 -------
-Distributed under GPL V3 Licencse, see [LICENSE](LICENSE.txt)
 Copyright (c) Deltares
 
+Distributed under GPL V3 Licencse, see [LICENSE](LICENSE.txt)
