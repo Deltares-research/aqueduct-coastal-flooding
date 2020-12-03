@@ -2,13 +2,13 @@ Scripts to simulate coastal flood hazard at the global scale based on near-shore
 These scripts were initially developed for [Aqueduct Floods](http://floods.wri.org/).
 See publication list for more background.
 
-How to use
-----------
-1. Install python using the miniconda distribution https://docs.conda.io/en/latest/miniconda.html
-2. Install all required dependencies using `conda env create -f environment.yml` Note that the scripts requires python 2.7
+Quick start guide
+-----------------
+1. Install python using the miniconda distribution from [conda](https://docs.conda.io/en/latest/miniconda.html). 
+2. Install all required dependencies using `conda env create -f environment.yml` with the provide [environment.yml file](environment.yml). Note that the scripts requires python 2.7.
 3. Install PCRaster 4.2, see [quick-start-guide](http://pcraster.geo.uu.nl/quick-start-guide/)
-4. Start the inun conda environment by running `conda activate inun`
-5. Prepare the ini file with references to the a DEM and forcing datasets
+4. Start the inun conda environment with `conda activate inun`
+5. Prepare the ini file with references to the a DEM and forcing datasets, see example [configuration](coastal_inun.ini).
 6. Run the model from CLI with e.g. `python scripts\coastal_inun.py -i coastal_inun.ini -d <output.nc> -b <waterlevels.nc> -v <waterlevel_variable_name> -s <sealevel_map.tif>`
 
 
