@@ -19,7 +19,7 @@ import shutil
 from scipy import ndimage as nd
 
 # import admin packages
-import ConfigParser
+import configparser
 import logging
 import logging.handlers
 # from optparse import OptionParser
@@ -60,7 +60,7 @@ def setlogger(logfilename, logReference, verbose=True):
         logger.debug("File logging to " + logfilename)
         return logger, ch
     except IOError:
-        print "ERROR: Failed to initialize logger with logfile: " + logfilename
+        print("ERROR: Failed to initialize logger with logfile: " + logfilename)
         sys.exit(1)
 
 
@@ -79,13 +79,13 @@ def close_with_error(logger, ch, msg):
 
 
 def open_conf(fn):
-    config = ConfigParser.SafeConfigParser()
+    config = configparser.SafeConfigParser()
     config.optionxform = str
 
     if os.path.exists(fn):
         config.read(fn)
     else:
-        print "Cannot open config file: " + fn
+        print("Cannot open config file: " + fn)
         sys.exit(1)
 
     return config
@@ -98,7 +98,7 @@ def configget(config, section, var, default, datatype='str'):
     with the default in the config-file
 
     Input:
-        - config - python ConfigParser object
+        - config - python configparser object
         - section - section in the file
         - var - variable (key) to get
         - default - default value
@@ -127,7 +127,7 @@ def get_gdal_extent(filename):
     ''' Return list of corner coordinates from a dataset'''
     ds = gdal.Open(filename, gdal.GA_ReadOnly)
     if ds is None:
-        print "invallid file name or file "
+        print("invallid file name or file ")
     else:
         gt = ds.GetGeoTransform()
         # 'top left x', 'w-e pixel resolution', '0', 'top left y', '0', 'n-s pixel resolution (negative value)'
@@ -332,7 +332,7 @@ def discretize_raster_bounds(fn_raster, x_tile, y_tile, x_overlap, y_overlap,
             ds, raster = get_gdal_rasterband(fn_raster)
             cols, rows = tile['size']
             origin_col, origin_row = tile['origin']
-            cells_with_data = np.sum(raster.ReadAsArray(origin_col, origin_row, cols, rows) != raster.GetNoDataValue())
+            cells_with_data = np.sum(raster.ReadAsArray(int(origin_col), int(origin_row), int(cols), int(rows)) != raster.GetNoDataValue())
             tile['has_DEM_data'] = int(np.nansum(cells_with_data) > 0)
             ds = None  # close dataset
 
@@ -370,7 +370,7 @@ def tile_admin(x, y, gt, start_col, end_col, start_row, end_row, overlap_col, ov
 
     """
     # output dictionary
-    tile = {'start_col': start_col, 'end_col': end_col, 'start_row': start_row, 'end_row': end_row}
+    tile = {'start_col': int(start_col), 'end_col': int(end_col), 'start_row': int(start_row), 'end_row': int(end_row)}
 
     # calc extent
     col_overlap_min = start_col - np.max([start_col - overlap_col, 0])
@@ -381,14 +381,14 @@ def tile_admin(x, y, gt, start_col, end_col, start_row, end_row, overlap_col, ov
     origin_row = start_row - row_overlap_min
     cols = (end_col + col_overlap_max) - (start_col - col_overlap_min)
     rows = (end_row + row_overlap_max) - (start_row - row_overlap_min)
-    tile['overlap'] = [col_overlap_min, col_overlap_max, row_overlap_min, row_overlap_max]
+    tile['overlap'] = [int(col_overlap_min), int(col_overlap_max), int(row_overlap_min), int(row_overlap_max)]
 
     # x & y coordinates terrain
     x_tile = x[np.arange(origin_col, origin_col+cols)]
     y_tile = y[np.arange(origin_row, origin_row+rows)]
     tile['extent'] = np.min(x_tile), np.min(y_tile), np.max(x_tile), np.max(y_tile)
-    tile['size'] = (cols, rows)
-    tile['origin'] = (origin_col, origin_row)
+    tile['size'] = (int(cols), int(rows))
+    tile['origin'] = (int(origin_col), int(origin_row))
     tile['gt'] = (x[origin_col], gt[1], gt[2],
                   y[origin_row], gt[4], gt[5])
     tile['x'] = x_tile.tolist()

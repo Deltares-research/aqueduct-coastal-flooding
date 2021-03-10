@@ -1,12 +1,12 @@
-name: inun
+name: inun38
 channels:
   - conda-forge
   - defaults
 dependencies:
-  - python=2.7
+  - python=3.8
   - python-dateutil
-  - libuuid
   - netcdf4
   - gdal
   - numpy
   - scipy
+  - pcraster

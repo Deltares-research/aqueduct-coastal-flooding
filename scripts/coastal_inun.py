@@ -329,11 +329,15 @@ def main():
     logger.info('Temporary directory: {:s}'.format(options.tempdir))
     logger.info('Time of flood conditions: {:s}'.format(options.time))
     logger.info('DEM file: {:s}'.format(options.dem_file))
-    logger.info('LDD file: {:s}'.format(options.ldd_file))
+    if options.ldd_file != None:
+        logger.info('LDD file: {:s}'.format(options.ldd_file))
     logger.info('EGM file: {:s}'.format(options.egm_file))
-    logger.info('Water mask file: {:s}'.format(options.water_perc_file))
-    logger.info('Sea level rise map: {}'.format(options.sea_level_rise_map))
-    logger.info('Subsidence map: {:s}'.format(options.subsidence_map))
+    if options.water_perc_file != None:
+        logger.info('Water mask file: {:s}'.format(options.water_perc_file))
+    if options.sea_level_rise_map != None:
+        logger.info('Sea level rise map: {}'.format(options.sea_level_rise_map))
+    if options.subsidence_map != None:
+        logger.info('Subsidence map: {:s}'.format(options.subsidence_map))
     logger.info('Using tiling from json file: {:s}'.format(str(options.tiles is not None)))
     if options.tiles is None:
         logger.info('Columns per tile: {:d}'.format(options.x_tile))

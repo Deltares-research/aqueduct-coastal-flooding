@@ -192,8 +192,7 @@ def pcr_inun(dem, ids, h_bounds, ids_coastline,
     fld_depth = pcr.ifthen(dem > -9999, pcr.scalar(0))
 
     for i, h in zip(ids, h_bounds):
-        coast_segment = pcr.ifthenelse(ids_coastline == i, pcr.boolean(1), pcr.boolean(0))
-
+        coast_segment = pcr.ifthenelse(ids_coastline == int(i), pcr.boolean(1), pcr.boolean(0))
         # find area below flood_level
         fld_prone = pcr.ifthenelse(dem_adjust <= pcr.scalar(float(h)), pcr.boolean(1), pcr.boolean(0))
         # make contiguous groups of cells which are below flood level
