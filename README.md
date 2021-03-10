@@ -5,9 +5,9 @@ See publication list for more background.
 Quick start guide
 -----------------
 1. Install python using the miniconda distribution from [conda](https://docs.conda.io/en/latest/miniconda.html). 
-2. Install all required dependencies using `conda env create -f environment.yml` with the provide [environment.yml file](environment.yml). Note that the scripts requires python 2.7.
-3. Install PCRaster 4.2, see [quick-start-guide](http://pcraster.geo.uu.nl/quick-start-guide/)
-4. Start the inun conda environment with `conda activate inun`
+2. Install all required dependencies using `conda env create -f environment.yml` with the provide [environment.yml file](environment.yml). Note that the scripts requires python 3.8.
+3. Check if PCRaster 4.3 installed successfully, see [PCRaster 4.3 installation](https://pcraster.geo.uu.nl/pcraster/4.3.0/documentation/pcraster_project/install.html)
+4. Start the inun38 conda environment with `conda activate inun38`
 5. Prepare the ini file with references to the a DEM and forcing datasets, see example [configuration](coastal_inun.ini).
 6. Run the model from CLI with e.g. `python scripts\coastal_inun.py -i coastal_inun.ini -d <output.nc> -b <waterlevels.nc> -v <waterlevel_variable_name> -s <sealevel_map.tif>`
 
@@ -24,6 +24,7 @@ Authors
 - Dirk Eilande (@DirkEilander)
 - Hessel C. Winsemius (@hcwinsemius)
 - Gundula Winter
+- Arjen Haag (@ArjenHaag)
 
 
 License
