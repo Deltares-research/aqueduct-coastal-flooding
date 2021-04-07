@@ -278,10 +278,10 @@ def gdal_sample_points(lat, lon, raster_file, win_size=1, func=np.mean):
                     win_xsize = min(cols - xoff, win_size) + min(int(px - win_size / 2.), 0)
                     win_ysize = min(rows - yoff, win_size) + min(int(py - win_size / 2.), 0)
                     intval = rb.ReadAsArray(xoff, yoff, win_xsize, win_ysize)
-                    if intval is None:
-                        intval = [np.nan]
                 else:
                     intval = rb.ReadAsArray(int(px), int(py), win_size, win_size)
+                if intval is None:
+                    intval = [np.nan]
                 if func is not None:
                     values = np.append(values, func(intval))
                 else:
