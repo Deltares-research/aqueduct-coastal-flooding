@@ -19,6 +19,20 @@ import os
 import sys
 import logging
 
+NP2GDAL_CONVERSION = {
+  "uint8": 1,
+  "int8": 1,
+  "uint16": 2,
+  "int16": 3,
+  "uint32": 4,
+  "int32": 5,
+  "float32": 6,
+  "float64": 7,
+  "complex64": 10,
+  "complex128": 11,
+}
+GDAL2NP_CONVERSION = {v:k for k,v in NP2GDAL_CONVERSION.items()}
+
 def gdal_writemap(file_name, file_format, x, y, data, fill_val, zlib=False,
                   gdal_type=gdal.GDT_Float32, resolution=None, srs=None):
     """ Write geographical file from numpy array
@@ -39,6 +53,18 @@ def gdal_writemap(file_name, file_format, x, y, data, fill_val, zlib=False,
         resolution=None: -- resolution of dataset, only needed if x and y are given as upperleft coordinates
         srs=None: -- projection object (imported by osgeo.osr)
     """
+    # import pdb; pdb.set_trace()
+    try:
+        import rasterio
+        from rasterio.transform import Affine
+        from rasterio.crs import CRS
+        use_rio = True
+    except ImportError:
+        use_rio = False
+        pass
+
+        
+
     # make the geotransform
     # Give georeferences
     if hasattr(x, '__len__'):
@@ -59,12 +85,32 @@ def gdal_writemap(file_name, file_format, x, y, data, fill_val, zlib=False,
         yres = -resolution
     geotrans = [xul, xres, 0, yul, 0, yres]
     
+    if use_rio and file_format == 'GTiff':
+        logging.info(str('Writing to file with rasterio {:s}').format(file_name))
+        dtype = GDAL2NP_CONVERSION[gdal_type]
+        kwargs = dict(
+            driver=file_format,
+            height=data.shape[0],
+            width=data.shape[1],
+            count=1,
+            dtype=dtype,
+            nodata=fill_val,
+            transform=Affine.from_gdal(*geotrans)
+        )
+        if zlib:
+            kwargs.update(compress='deflate')
+        if srs:
+            kwargs.update(crs=CRS.from_user_input(srs))
+        with rasterio.open(file_name, mode='w', **kwargs) as dst:
+            dst.write(data.astype(dtype), 1)
+        return
+    
     gdal.AllRegister()
     driver1 = gdal.GetDriverByName('GTiff')
     driver2 = gdal.GetDriverByName(file_format)
-    # Processing
     temp_file_name = str('{:s}.tif').format(file_name)
     logging.info(str('Writing to temporary file {:s}').format(temp_file_name))
+    # Processing
     if zlib:
         TempDataset = driver1.Create(temp_file_name, data.shape[1],
                                      data.shape[0], 1, gdal_type,
